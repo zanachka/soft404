@@ -48,9 +48,40 @@ You can also create a classifier explicitly::
     >>> clf.predict('<h1>Page not found</h1>')
     0.9736860086882132
 
+Command-line usage
+++++++++++++++++++
+
+You can use the package from the command line::
+
+    # Predict from an HTML file
+    python -m soft404 page.html
+    
+    # Predict from inline HTML
+    python -m soft404 --html '<h1>Page not found</h1>'
+    
+    # Show help
+    python -m soft404 --help
+
 
 Development
 -----------
+
+Installing for development
+++++++++++++++++++++++++++
+
+To install with development dependencies::
+
+    pip install -e ".[dev]"
+
+This installs additional tools needed for training and data processing,
+including console scripts:
+
+- ``soft404-train`` - Train a new classifier
+- ``soft404-convert`` - Convert HTML pages to text format for training
+
+
+Model Training
+++++++++++++++
 
 Classifier is trained on 120k pages from 25k domains, with 404 page ratio of about 1/3.
 With 10-fold cross-validation, PR AUC (average precision) is 0.990 ± 0.003,
@@ -62,7 +93,7 @@ Getting data for training
 
 Install dev requirements::
 
-    pip install -r requirements_dev.txt
+    pip install -e ".[dev]"
 
 Run the crawler for a while (results will appear in ``pages.jl.gz`` file)::
 
@@ -73,20 +104,22 @@ Run the crawler for a while (results will appear in ``pages.jl.gz`` file)::
 Training
 ++++++++
 
+**Note:** Training requires development dependencies. Install with ``pip install -e ".[dev]"``
+
 First, extract text and structure from html::
 
-    ./soft404/convert_to_text.py pages.jl.gz items
+    soft404-convert pages.jl.gz items
 
 This will produce two files, ``items.meta.jl.gz`` and ``items.items.jl.gz``.
 Next, train the classifier::
 
-    ./soft404/train.py items
+    soft404-train items
 
 Vectorizer takes a while to run, but it's result is cached (the filename
 where it is cached will be printed on the next run).
 If you are happy with results, save the classifier::
 
-    ./soft404/train.py items --save soft404/clf.joblib
+    soft404-train items --save soft404/clf.joblib
 
 
 License
