@@ -1,11 +1,38 @@
 from functools import partial
 import os.path
+import sys
 
-from sklearn.externals import joblib
+import joblib
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer
 
 from soft404.utils import html_to_item, item_to_text
+
+# Compatibility fix for older joblib files pickled with sklearn.externals.joblib
+# This is needed to load models that were saved with older sklearn versions
+if 'sklearn.externals.joblib' not in sys.modules:
+    import sklearn
+    # Create a mock module structure
+    if not hasattr(sklearn, 'externals'):
+        sklearn.externals = type('externals', (), {})()
+    sklearn.externals.joblib = joblib
+    # Register in sys.modules so pickle can find it
+    sys.modules['sklearn.externals.joblib'] = joblib
+    sys.modules['sklearn.externals.joblib.numpy_pickle'] = joblib.numpy_pickle
+
+# Additional compatibility fixes for sklearn module structure changes
+if 'sklearn.linear_model.stochastic_gradient' not in sys.modules:
+    import sklearn.linear_model
+    sys.modules['sklearn.linear_model.stochastic_gradient'] = sklearn.linear_model
+
+# Compatibility fix for sgd_fast module which was reorganized in newer sklearn versions
+if 'sklearn.linear_model.sgd_fast' not in sys.modules:
+    try:
+        from sklearn.linear_model import _sgd_fast
+        sys.modules['sklearn.linear_model.sgd_fast'] = _sgd_fast
+    except ImportError:
+        # Fallback for very old sklearn versions
+        pass
 
 
 default_location = os.path.join(os.path.dirname(__file__), 'clf.joblib')
