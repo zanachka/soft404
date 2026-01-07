@@ -1,0 +1,15 @@
+./setup.py
+./AGENTS.md
+./soft404/train.py
+./soft404/utils.py
+./soft404/__init__.py
+./soft404/convert_to_text.py
+./soft404/predict.py
+./tests/test_train.py
+./tests/test_utils.py
+./tests/test_predict.py
+./tests/__init__.py
+./crawler/spiders.py
+./crawler/middleware.py
+./crawler/settings.py
+./crawler/exports.py
