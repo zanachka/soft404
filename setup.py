@@ -25,7 +25,21 @@ setup(
         'scipy>=0.18',
         'webstruct>=0.4',
         'parsel>=1.4',
+        'joblib',
     ],
+    extras_require={
+        'dev': [
+            'eli5',
+            'json_lines',
+            'langdetect',
+            'pandas',
+            'Scrapy',
+            'tldextract',
+            'tqdm',
+            'pytest',
+            'pytest-cov',
+        ],
+    },
     long_description=read('README.rst'),
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -38,5 +52,18 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
     ],
+    entry_points={
+        'console_scripts': [
+            'soft404-train=soft404.train:main',
+            'soft404-convert=soft404.convert_to_text:main',
+        ],
+    },
 )

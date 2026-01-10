@@ -12,7 +12,7 @@ from eli5.sklearn.explain_weights import explain_weights
 from eli5.formatters import format_as_text
 import json_lines
 import numpy as np
-from sklearn.externals import joblib
+import joblib
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
